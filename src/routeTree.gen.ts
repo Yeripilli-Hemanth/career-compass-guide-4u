@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PlanRouteImport } from './routes/plan'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as CareersIndexRouteImport } from './routes/careers/index'
+import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/careers/$slug',
+  path: '/careers/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers/': typeof CareersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers': typeof CareersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof OnboardingRoute
+  '/plan': typeof PlanRoute
+  '/profile': typeof ProfileRoute
+  '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers/': typeof CareersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/plan'
+    | '/profile'
+    | '/quiz'
+    | '/careers/$slug'
+    | '/careers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/plan'
+    | '/profile'
+    | '/quiz'
+    | '/careers/$slug'
+    | '/careers'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/plan'
+    | '/profile'
+    | '/quiz'
+    | '/careers/$slug'
+    | '/careers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  OnboardingRoute: typeof OnboardingRoute
+  PlanRoute: typeof PlanRoute
+  ProfileRoute: typeof ProfileRoute
+  QuizRoute: typeof QuizRoute
+  CareersSlugRoute: typeof CareersSlugRoute
+  CareersIndexRoute: typeof CareersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +143,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers/': {
+      id: '/careers/'
+      path: '/careers'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/careers/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  OnboardingRoute: OnboardingRoute,
+  PlanRoute: PlanRoute,
+  ProfileRoute: ProfileRoute,
+  QuizRoute: QuizRoute,
+  CareersSlugRoute: CareersSlugRoute,
+  CareersIndexRoute: CareersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
