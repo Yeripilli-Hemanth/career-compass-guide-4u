@@ -16,6 +16,7 @@ import { Route as PlanRouteImport } from './routes/plan'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
+import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const CareersIndexRoute = CareersIndexRouteImport.update({
   path: '/careers/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/careers/$slug',
+  path: '/careers/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/careers/': typeof CareersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/careers': typeof CareersIndexRoute
 }
 export interface FileRoutesById {
@@ -79,15 +87,30 @@ export interface FileRoutesById {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/careers/': typeof CareersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/onboarding' | '/plan' | '/profile' | '/quiz' | '/careers/'
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/plan'
+    | '/profile'
+    | '/quiz'
+    | '/careers/$slug'
+    | '/careers/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/auth' | '/onboarding' | '/plan' | '/profile' | '/quiz' | '/careers'
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/plan'
+    | '/profile'
+    | '/quiz'
+    | '/careers/$slug'
+    | '/careers'
   id:
     | '__root__'
     | '/'
@@ -96,6 +119,7 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/quiz'
+    | '/careers/$slug'
     | '/careers/'
   fileRoutesById: FileRoutesById
 }
@@ -106,6 +130,7 @@ export interface RootRouteChildren {
   PlanRoute: typeof PlanRoute
   ProfileRoute: typeof ProfileRoute
   QuizRoute: typeof QuizRoute
+  CareersSlugRoute: typeof CareersSlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
 }
 
@@ -160,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/careers/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -170,8 +202,19 @@ const rootRouteChildren: RootRouteChildren = {
   PlanRoute: PlanRoute,
   ProfileRoute: ProfileRoute,
   QuizRoute: QuizRoute,
+  CareersSlugRoute: CareersSlugRoute,
   CareersIndexRoute: CareersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
