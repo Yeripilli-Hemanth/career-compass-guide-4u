@@ -38,7 +38,7 @@ export function StudyingHome({ profile }: { profile: Profile }) {
   const currentStage =
     career.career_stages.find((stage) => stage.skills.some((s) => !completed.has(s.id))) ??
     career.career_stages[career.career_stages.length - 1];
-  const upNext = currentStage.skills.find((s) => !completed.has(s.id));
+  const upNext = currentStage?.skills.find((s) => !completed.has(s.id));
 
   async function markCompleted(skillId: string) {
     if (!user) return;
@@ -56,7 +56,7 @@ export function StudyingHome({ profile }: { profile: Profile }) {
         <div className="mt-4 rounded-lg border border-border bg-card p-4">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">
-              Stage {currentStage.stage_order} of {career.career_stages.length} · {currentStage.stage_name}
+              Stage {currentStage?.stage_order ?? 1} of {career.career_stages.length} · {currentStage?.stage_name}
             </span>
             <span className="text-muted-foreground">{percent}% complete</span>
           </div>
