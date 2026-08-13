@@ -41,6 +41,7 @@ function CareersPage() {
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Input
           placeholder="Search careers"
+          aria-label="Search careers"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs"
