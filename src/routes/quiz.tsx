@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/quiz")({
   head: () => ({
     meta: [
-      { title: "Interest quiz — find a tech career that fits" },
+      { title: "Interest quiz — find a tech career that fits | Career Compass" },
       {
         name: "description",
         content: "Six quick questions about how you like to work, and three computer science careers worth reading about.",
       },
-      { property: "og:title", content: "Interest quiz — find a tech career that fits" },
+      { property: "og:title", content: "Interest quiz — find a tech career that fits | Career Compass" },
       { property: "og:description", content: "Answer six questions and get three career directions to explore." },
     ],
   }),
