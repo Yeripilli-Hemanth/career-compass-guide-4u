@@ -15,7 +15,7 @@ export const Route = createFileRoute("/careers/$slug")({
     if (!loaderData) {
       return { meta: [{ title: "Career not found — Career compass" }, { name: "robots", content: "noindex" }] };
     }
-    const title = `${loaderData.name} roadmap — skills, stages and free resources`;
+    const title = `${loaderData.name} roadmap | Career Compass`;
     const description =
       loaderData.description ??
       `A stage-by-stage roadmap for becoming a ${loaderData.name.toLowerCase()}.`;
