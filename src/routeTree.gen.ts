@@ -15,6 +15,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 
@@ -48,6 +49,11 @@ const QuizRoute = QuizRouteImport.update({
   path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/': typeof CareersIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers': typeof CareersIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/plan': typeof PlanRoute
   '/profile': typeof ProfileRoute
   '/quiz': typeof QuizRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/': typeof CareersIndexRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/quiz'
+    | '/sitemap.xml'
     | '/careers/$slug'
     | '/careers/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/quiz'
+    | '/sitemap.xml'
     | '/careers/$slug'
     | '/careers'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/plan'
     | '/profile'
     | '/quiz'
+    | '/sitemap.xml'
     | '/careers/$slug'
     | '/careers/'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   PlanRoute: typeof PlanRoute
   ProfileRoute: typeof ProfileRoute
   QuizRoute: typeof QuizRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CareersSlugRoute: typeof CareersSlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlanRoute: PlanRoute,
   ProfileRoute: ProfileRoute,
   QuizRoute: QuizRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   CareersSlugRoute: CareersSlugRoute,
   CareersIndexRoute: CareersIndexRoute,
 }
