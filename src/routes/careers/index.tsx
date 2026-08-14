@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/careers/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(careersQuery),
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
       { title: "Browse tech careers — Career compass" },
       {
@@ -19,6 +19,28 @@ export const Route = createFileRoute("/careers/")({
       {
         property: "og:description",
         content: "23 computer science career roadmaps with in-demand skills and free learning resources.",
+      },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/careers" },
+    ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/careers" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Browse tech careers",
+          url: "https://career-compass-guide-4u.lovable.app/careers",
+          mainEntity: {
+            "@type": "ItemList",
+            itemListElement: (loaderData ?? []).map((career, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: career.name,
+              url: `https://career-compass-guide-4u.lovable.app/careers/${career.slug}`,
+            })),
+          },
+        }),
       },
     ],
   }),

@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Career compass — free CSE career roadmaps" },
+      { title: "Career compass" },
       {
         name: "description",
         content:
@@ -87,6 +87,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "Career compass",
+              url: "https://career-compass-guide-4u.lovable.app",
+              logo: "https://career-compass-guide-4u.lovable.app/app-icon.png",
+            },
+            {
+              "@type": "WebSite",
+              name: "Career compass",
+              url: "https://career-compass-guide-4u.lovable.app",
+            },
+          ],
+        }),
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

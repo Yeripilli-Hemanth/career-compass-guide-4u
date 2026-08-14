@@ -13,7 +13,7 @@ export function SkillCard({
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h4 className="text-sm font-medium">{skill.name}</h4>
+          <h3 className="text-sm font-medium">{skill.name}</h3>
           {skill.why_it_matters ? (
             <p className="mt-1 text-sm text-muted-foreground">{skill.why_it_matters}</p>
           ) : null}
