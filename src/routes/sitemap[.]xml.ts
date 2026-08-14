@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 
-const BASE_URL = "https://career-compass-guide-444.lovable.app";
+const BASE_URL = "https://career-compass-guide-4u.lovable.app";
 
 interface SitemapEntry {
   path: string;
