@@ -59,6 +59,16 @@ function CareersPage() {
       <p className="mt-2 text-muted-foreground">
         Every roadmap has four stages, in-demand skills and free resources.
       </p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        New here? Read the{" "}
+        <Link
+          to="/guides/computer-science-career-paths"
+          className="text-primary hover:underline"
+        >
+          guide to computer science career paths
+        </Link>{" "}
+        to narrow down first.
+      </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Input
