@@ -74,6 +74,13 @@ function Landing() {
           <Link to="/careers" className="text-primary hover:underline">
             browse the careers first
           </Link>
+          , or read the{" "}
+          <Link
+            to="/guides/computer-science-career-paths"
+            className="text-primary hover:underline"
+          >
+            guide to computer science career paths
+          </Link>
           .
         </p>
       </section>
