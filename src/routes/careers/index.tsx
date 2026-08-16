@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Search } from "lucide-react";
 import { careersQuery } from "@/lib/career-data";
 import { PageShell } from "@/components/PageShell";
-import { Input } from "@/components/ui/input";
+import { CareerCard } from "@/components/CareerCard";
 
 export const Route = createFileRoute("/careers/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(careersQuery),
@@ -55,11 +56,11 @@ function CareersPage() {
 
   return (
     <PageShell>
-      <h1 className="text-2xl font-semibold">Careers in computer science</h1>
-      <p className="mt-2 text-muted-foreground">
+      <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Careers in computer science</h1>
+      <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted-foreground">
         Every roadmap has four stages, in-demand skills and free resources.
       </p>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-3 text-sm text-muted-foreground">
         New here? Read the{" "}
         <Link
           to="/guides/computer-science-career-paths"
@@ -70,18 +71,25 @@ function CareersPage() {
         to narrow down first.
       </p>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Input
-          placeholder="Search careers"
-          aria-label="Search careers"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="max-w-xs"
-        />
-        <span className="rounded-md border border-primary bg-accent px-3 py-1.5 text-sm text-accent-foreground">
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="relative w-full max-w-sm">
+          <Search
+            className="pointer-events-none absolute left-4 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <input
+            type="search"
+            placeholder="Search careers"
+            aria-label="Search careers"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="card-surface h-12 w-full rounded-xl pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-primary/50"
+          />
+        </div>
+        <span className="inline-flex min-h-10 items-center rounded-full border border-primary/40 bg-accent px-3.5 text-sm font-medium text-accent-foreground">
           Computer science
         </span>
-        <span className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground">
+        <span className="inline-flex min-h-10 items-center rounded-full border border-border px-3.5 text-sm text-muted-foreground">
           Other fields — coming soon
         </span>
       </div>
@@ -91,17 +99,9 @@ function CareersPage() {
           No career matches that yet. Try a shorter search, like "data".
         </p>
       ) : (
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((career) => (
-            <Link
-              key={career.id}
-              to="/careers/$slug"
-              params={{ slug: career.slug }}
-              className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary"
-            >
-              <h2 className="text-sm font-medium">{career.name}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{career.short_description}</p>
-            </Link>
+            <CareerCard key={career.id} career={career} tags={[career.field, "4 stages"]} />
           ))}
         </div>
       )}
