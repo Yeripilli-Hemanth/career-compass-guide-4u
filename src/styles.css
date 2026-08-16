@@ -36,8 +36,6 @@
   --color-demand-medium-foreground: var(--demand-medium-foreground);
   --color-demand-low: var(--demand-low);
   --color-demand-low-foreground: var(--demand-low-foreground);
-  --shadow-card: var(--shadow-card);
-  --shadow-elevated: var(--shadow-elevated);
 }
 
 :root {
