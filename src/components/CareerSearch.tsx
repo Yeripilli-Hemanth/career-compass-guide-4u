@@ -68,7 +68,8 @@ export function CareerSearch({ placeholder = "Search a career, e.g. data analyst
             setActive((i) => (i - 1 + matches.length) % matches.length);
           } else if (e.key === "Enter") {
             e.preventDefault();
-            go(matches[active].slug);
+            const picked = matches[active];
+            if (picked) go(picked.slug);
           } else if (e.key === "Escape") {
             setOpen(false);
           }
