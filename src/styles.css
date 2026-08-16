@@ -101,3 +101,7 @@
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(8px);
 }
+
+@utility shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
