@@ -68,7 +68,11 @@ function CareersPage() {
         >
           guide to computer science career paths
         </Link>{" "}
-        to narrow down first.
+        to narrow down first, or the{" "}
+        <Link to="/guides/entry-level-tech-jobs" className="text-primary hover:underline">
+          guide to entry level tech jobs
+        </Link>{" "}
+        if you want a first job soon.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center gap-3">

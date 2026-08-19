@@ -19,6 +19,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as GuidesComputerScienceCareerPathsRouteImport } from './routes/guides/computer-science-career-paths'
+import { Route as GuidesEntryLevelTechJobsRouteImport } from './routes/guides/entry-level-tech-jobs'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,6 +72,12 @@ const GuidesComputerScienceCareerPathsRoute =
     path: '/guides/computer-science-career-paths',
     getParentRoute: () => rootRouteImport,
   } as any)
+const GuidesEntryLevelTechJobsRoute =
+  GuidesEntryLevelTechJobsRouteImport.update({
+    id: '/guides/entry-level-tech-jobs',
+    path: '/guides/entry-level-tech-jobs',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/guides/computer-science-career-paths': typeof GuidesComputerScienceCareerPathsRoute
+  '/guides/entry-level-tech-jobs': typeof GuidesEntryLevelTechJobsRoute
   '/careers/': typeof CareersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -94,6 +102,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/guides/computer-science-career-paths': typeof GuidesComputerScienceCareerPathsRoute
+  '/guides/entry-level-tech-jobs': typeof GuidesEntryLevelTechJobsRoute
   '/careers': typeof CareersIndexRoute
 }
 export interface FileRoutesById {
@@ -107,6 +116,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/guides/computer-science-career-paths': typeof GuidesComputerScienceCareerPathsRoute
+  '/guides/entry-level-tech-jobs': typeof GuidesEntryLevelTechJobsRoute
   '/careers/': typeof CareersIndexRoute
 }
 export interface FileRouteTypes {
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/careers/$slug'
     | '/guides/computer-science-career-paths'
+    | '/guides/entry-level-tech-jobs'
     | '/careers/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/careers/$slug'
     | '/guides/computer-science-career-paths'
+    | '/guides/entry-level-tech-jobs'
     | '/careers'
   id:
     | '__root__'
@@ -145,6 +157,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/careers/$slug'
     | '/guides/computer-science-career-paths'
+    | '/guides/entry-level-tech-jobs'
     | '/careers/'
   fileRoutesById: FileRoutesById
 }
@@ -158,6 +171,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CareersSlugRoute: typeof CareersSlugRoute
   GuidesComputerScienceCareerPathsRoute: typeof GuidesComputerScienceCareerPathsRoute
+  GuidesEntryLevelTechJobsRoute: typeof GuidesEntryLevelTechJobsRoute
   CareersIndexRoute: typeof CareersIndexRoute
 }
 
@@ -233,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuidesComputerScienceCareerPathsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/entry-level-tech-jobs': {
+      id: '/guides/entry-level-tech-jobs'
+      path: '/guides/entry-level-tech-jobs'
+      fullPath: '/guides/entry-level-tech-jobs'
+      preLoaderRoute: typeof GuidesEntryLevelTechJobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   CareersSlugRoute: CareersSlugRoute,
   GuidesComputerScienceCareerPathsRoute: GuidesComputerScienceCareerPathsRoute,
+  GuidesEntryLevelTechJobsRoute: GuidesEntryLevelTechJobsRoute,
   CareersIndexRoute: CareersIndexRoute,
 }
 export const routeTree = rootRouteImport

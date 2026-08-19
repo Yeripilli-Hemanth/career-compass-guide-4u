@@ -98,6 +98,10 @@ function Landing() {
           <Link to="/guides/computer-science-career-paths" className="text-primary hover:underline">
             guide to computer science career paths
           </Link>
+          {" "}or the{" "}
+          <Link to="/guides/entry-level-tech-jobs" className="text-primary hover:underline">
+            guide to entry level tech jobs
+          </Link>
           .
         </p>
       </section>
