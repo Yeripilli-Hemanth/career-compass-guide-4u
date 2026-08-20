@@ -17,7 +17,9 @@ export const Route = createFileRoute("/quiz")({
       },
       { property: "og:title", content: "Interest quiz | Career Compass" },
       { property: "og:description", content: "Answer six questions and get three career directions to explore." },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/quiz" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/quiz" }],
   }),
   component: QuizPage,
 });
