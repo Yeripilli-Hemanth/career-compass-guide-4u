@@ -28,7 +28,9 @@ export const Route = createFileRoute("/")({
         content:
           "Personalised roadmaps for 23 computer science careers, with in-demand skills and free learning resources.",
       },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/" }],
   }),
   component: Index,
 });

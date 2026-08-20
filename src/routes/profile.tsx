@@ -17,7 +17,9 @@ export const Route = createFileRoute("/profile")({
       { name: "description", content: "Update your stage, target career and review the skills you've completed." },
       { property: "og:title", content: "Your profile — Career compass" },
       { property: "og:description", content: "Manage your career roadmap settings and completed skills." },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/profile" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/profile" }],
   }),
   component: ProfilePage,
 });

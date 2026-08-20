@@ -17,7 +17,9 @@ export const Route = createFileRoute("/onboarding")({
       { name: "description", content: "Answer three quick questions so your career roadmap fits where you are today." },
       { property: "og:title", content: "Set up your roadmap — Career compass" },
       { property: "og:description", content: "Three quick questions to personalise your career roadmap." },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/onboarding" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/onboarding" }],
   }),
   component: Onboarding,
 });

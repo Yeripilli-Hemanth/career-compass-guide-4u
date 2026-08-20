@@ -21,7 +21,9 @@ export const Route = createFileRoute("/plan")({
       },
       { property: "og:title", content: "Skill gap plan — Career compass" },
       { property: "og:description", content: "See exactly which skills stand between you and your target role." },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/plan" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/plan" }],
   }),
   component: PlanPage,
 });

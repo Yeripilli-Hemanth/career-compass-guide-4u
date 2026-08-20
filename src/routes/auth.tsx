@@ -16,7 +16,9 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Sign in or create a free account to save your career roadmap progress." },
       { property: "og:title", content: "Sign in — Career compass" },
       { property: "og:description", content: "Create a free account to track your career roadmap progress." },
+      { property: "og:url", content: "https://career-compass-guide-4u.lovable.app/auth" },
     ],
+    links: [{ rel: "canonical", href: "https://career-compass-guide-4u.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
