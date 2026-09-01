@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Link } from "@tanstack/react-router";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { askAssistant } from "@/lib/assistant.functions";
 import { Button } from "@/components/ui/button";
@@ -18,9 +17,9 @@ function renderContent(text: string) {
   const parts = text.split(/(\/[a-z0-9-]+(?:\/[a-z0-9$-]+)*)/gi);
   return parts.map((part, i) =>
     /^\/[a-z0-9-]/i.test(part) ? (
-      <Link key={i} to={part} className="text-primary underline underline-offset-2">
+      <a key={i} href={part} className="text-primary underline underline-offset-2">
         {part}
-      </Link>
+      </a>
     ) : (
       <span key={i}>{part}</span>
     ),
