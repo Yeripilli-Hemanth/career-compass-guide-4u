@@ -82,9 +82,14 @@ export function AssistantWidget() {
           aria-label="Career compass assistant"
           className="card-surface fixed bottom-24 right-4 z-50 flex h-[min(70vh,32rem)] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl"
         >
-          <div className="border-b border-border/70 px-4 py-3">
-            <h2 className="text-sm font-semibold">Ask the assistant</h2>
-            <p className="text-xs text-muted-foreground">Careers, skills and how to use the site</p>
+          <div className="flex items-center gap-2.5 border-b border-border/70 px-4 py-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-sm font-semibold">Ask the assistant</h2>
+              <p className="text-xs text-muted-foreground">Careers, skills and how to use the site</p>
+            </div>
           </div>
 
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
