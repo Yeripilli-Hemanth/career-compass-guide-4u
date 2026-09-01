@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { Sparkles, X, Send, Loader2 } from "lucide-react";
 import { askAssistant } from "@/lib/assistant.functions";
 import { Button } from "@/components/ui/button";
 
@@ -73,7 +73,7 @@ export function AssistantWidget() {
         aria-expanded={open}
         className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
-        {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-6 w-6" />}
+        {open ? <X className="h-5 w-5" /> : <Sparkles className="h-6 w-6" />}
       </button>
 
       {open ? (
