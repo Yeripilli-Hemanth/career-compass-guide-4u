@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { Sparkles, X, Send, Loader2 } from "lucide-react";
 import { askAssistant } from "@/lib/assistant.functions";
 import { Button } from "@/components/ui/button";
 
@@ -73,7 +73,7 @@ export function AssistantWidget() {
         aria-expanded={open}
         className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
-        {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-6 w-6" />}
+        {open ? <X className="h-5 w-5" /> : <Sparkles className="h-6 w-6" />}
       </button>
 
       {open ? (
@@ -82,9 +82,14 @@ export function AssistantWidget() {
           aria-label="Career compass assistant"
           className="card-surface fixed bottom-24 right-4 z-50 flex h-[min(70vh,32rem)] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl"
         >
-          <div className="border-b border-border/70 px-4 py-3">
-            <h2 className="text-sm font-semibold">Ask the assistant</h2>
-            <p className="text-xs text-muted-foreground">Careers, skills and how to use the site</p>
+          <div className="flex items-center gap-2.5 border-b border-border/70 px-4 py-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <div>
+              <h2 className="text-sm font-semibold">Ask the assistant</h2>
+              <p className="text-xs text-muted-foreground">Careers, skills and how to use the site</p>
+            </div>
           </div>
 
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
