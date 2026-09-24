@@ -5,6 +5,9 @@ import type { Career } from "@/lib/career-data";
 
 export function CareerCard({ career, tags }: { career: Career; tags?: string[] }) {
   const Icon = careerIcon(career.name);
+  const isHighDemand = ["ai-engineer", "data-analyst", "cybersecurity-analyst"].includes(
+    career.slug,
+  );
   return (
     <Link
       to="/careers/$slug"
@@ -15,13 +18,20 @@ export function CareerCard({ career, tags }: { career: Career; tags?: string[] }
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
-        <ArrowUpRight
-          className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
-          aria-hidden="true"
-        />
+        <div className="flex items-center gap-2">
+          {isHighDemand ? (
+            <span className="rounded-full bg-demand-high px-2 py-0.5 text-xs font-medium text-demand-high-foreground">
+              High demand
+            </span>
+          ) : null}
+          <ArrowUpRight
+            className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+            aria-hidden="true"
+          />
+        </div>
       </div>
       <h3 className="mt-4 text-base font-semibold">{career.name}</h3>
-      <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
         {career.short_description}
       </p>
       {tags?.length ? (
