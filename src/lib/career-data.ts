@@ -36,10 +36,16 @@ export const careersQuery = {
   queryFn: async (): Promise<Career[]> => {
     const { data, error } = await supabase
       .from("careers")
-      .select("id, name, slug, field, short_description")
+      .select("id, name, slug, field, short_description, career_stages(id, stage_order, skills(id))")
       .order("name");
     if (error) throw error;
-    return data as Career[];
+    return data
+      .filter(
+        (career) =>
+          career.career_stages.length === 4 &&
+          career.career_stages.every((stage) => stage.skills.length > 0),
+      )
+      .map(({ career_stages: _careerStages, ...career }) => career) as Career[];
   },
   staleTime: 5 * 60 * 1000,
 };
