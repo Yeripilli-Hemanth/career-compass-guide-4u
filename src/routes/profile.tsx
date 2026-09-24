@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { BriefcaseBusiness, Check, Compass, GraduationCap } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { careersQuery, careerByIdQuery, userSkillsQuery, flatSkills, type Stage } from "@/lib/career-data";
@@ -30,13 +31,19 @@ const stageLabels: Record<Stage, string> = {
   working: "Working and pivoting",
 };
 
+const stageIcons = {
+  exploring: Compass,
+  studying: GraduationCap,
+  working: BriefcaseBusiness,
+} satisfies Record<Stage, typeof Compass>;
+
 function ProfilePage() {
   const { user, loading } = useAuth();
   const { profile } = useProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: careers = [] } = useQuery(careersQuery);
-  const { data: career } = useQuery(careerByIdQuery(profile?.target_career_id));
+  const { data: career } = useQuery(careerByIdQuery(targetCareerId || profile?.target_career_id));
   const { data: userSkills = [] } = useQuery(userSkillsQuery(user?.id));
 
   const [stage, setStage] = useState<Stage>("exploring");
@@ -57,6 +64,9 @@ function ProfilePage() {
     userSkills.filter((s) => s.status === "completed").map((s) => s.skill_id),
   );
   const completedSkills = flatSkills(career).filter((s) => completedIds.has(s.id));
+  const totalSkills = flatSkills(career).length;
+  const progress = totalSkills ? Math.round((completedSkills.length / totalSkills) * 100) : 0;
+  const displayName = profile.full_name?.trim().split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
 
   async function save() {
     if (!user) return;
@@ -74,23 +84,70 @@ function ProfilePage() {
 
   return (
     <PageShell>
-      <h1 className="text-2xl font-semibold">Your profile</h1>
-      <p className="mt-2 text-muted-foreground">{profile.full_name ?? user?.email}</p>
-
-      <section className="mt-8 space-y-2">
-        <Label>Where you are right now</Label>
-        {(Object.keys(stageLabels) as Stage[]).map((value) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => setStage(value)}
-            className={`block w-full rounded-lg border p-3 text-left text-sm transition-colors ${
-              stage === value ? "border-primary bg-accent" : "border-border bg-card hover:border-primary"
-            }`}
+      <header>
+        <h1 className="text-2xl font-semibold">Hey {displayName}, here's where you stand</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {career ? `Your ${career.name} roadmap progress` : "Choose a target career to start tracking progress"}
+        </p>
+        <div className="mt-5 max-w-2xl border-y border-border py-4">
+          <div className="flex items-center justify-between gap-4 text-sm">
+            <span className="font-medium">
+              {completedSkills.length} of {totalSkills} skills done
+            </span>
+            <span className="text-primary">{progress}%</span>
+          </div>
+          <div
+            className="mt-3 h-1.5 overflow-hidden rounded-full bg-secondary"
+            role="progressbar"
+            aria-label="Roadmap skills completed"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={progress}
           >
-            {stageLabels[value]}
-          </button>
-        ))}
+            <div
+              className="h-full rounded-full bg-primary transition-[width] duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </header>
+
+      <section className="mt-8">
+        <Label>Where you are right now</Label>
+        <div className="mt-2 grid gap-3 sm:grid-cols-3">
+          {(Object.keys(stageLabels) as Stage[]).map((value) => {
+            const Icon = stageIcons[value];
+            const selected = stage === value;
+            return (
+              <Button
+                key={value}
+                type="button"
+                variant="outline"
+                aria-pressed={selected}
+                onClick={() => setStage(value)}
+                className={`relative h-auto min-h-28 items-start justify-start rounded-lg p-4 text-left transition-colors ${
+                  selected
+                    ? "border-primary bg-accent text-accent-foreground hover:bg-accent"
+                    : "border-border bg-card hover:border-primary hover:bg-card"
+                }`}
+              >
+                <span className="flex flex-col items-start gap-4 whitespace-normal">
+                  <span
+                    className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                      selected ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                    }`}
+                  >
+                    <Icon className="h-4.5 w-4.5" aria-hidden="true" />
+                  </span>
+                  <span className="pr-5 text-sm font-medium">{stageLabels[value]}</span>
+                </span>
+                {selected ? (
+                  <Check className="absolute right-3 top-3 h-4 w-4 text-primary" aria-hidden="true" />
+                ) : null}
+              </Button>
+            );
+          })}
+        </div>
       </section>
 
       <section className="mt-6 space-y-1.5">
