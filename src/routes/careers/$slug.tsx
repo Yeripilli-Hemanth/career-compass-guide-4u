@@ -60,17 +60,6 @@ export const Route = createFileRoute("/careers/$slug")({
               url: "https://career-compass-guide-4u.lovable.app",
             },
             teaches: loaderData.stages.flatMap((stage) => stage.skills),
-            hasCourseInstance: {
-              "@type": "CourseInstance",
-              courseMode: "online",
-              courseWorkload: "P12M",
-            },
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-              category: "Free",
-            },
             syllabusSections: loaderData.stages.map((stage, i) => ({
               "@type": "Syllabus",
               position: i + 1,
