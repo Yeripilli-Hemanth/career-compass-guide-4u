@@ -1,6 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Check, Download } from "lucide-react";
 import { careerDetailQuery } from "@/lib/career-data";
+import { useRoadmapProgress } from "@/lib/use-roadmap-progress";
 import { PageShell } from "@/components/PageShell";
 import { SkillCard } from "@/components/SkillCard";
 import { Button } from "@/components/ui/button";
@@ -81,14 +84,42 @@ export const Route = createFileRoute("/careers/$slug")({
   component: CareerDetailPage,
 });
 
+const demandFilters = [
+  { key: "all", label: "All skills" },
+  { key: "high", label: "High demand" },
+  { key: "medium", label: "Medium demand" },
+  { key: "low", label: "Low demand" },
+] as const;
+
+type DemandFilter = (typeof demandFilters)[number]["key"];
+
 function CareerDetailPage() {
   const { slug } = Route.useParams();
   const { data: career } = useSuspenseQuery(careerDetailQuery(slug));
+  const { completed, toggle, isSignedIn } = useRoadmapProgress(slug);
+  const [demand, setDemand] = useState<DemandFilter>("all");
+  const [hideDone, setHideDone] = useState(false);
+  const [activeStage, setActiveStage] = useState(1);
+
+  const stages = career?.career_stages ?? [];
+  const allSkills = stages.flatMap((s) => s.skills);
+  const doneCount = allSkills.filter((s) => completed.has(s.id)).length;
+  const percent = allSkills.length ? Math.round((doneCount / allSkills.length) * 100) : 0;
+
+  const matches = (skill: { id: string; demand_level: string }) =>
+    (demand === "all" || skill.demand_level === demand) && (!hideDone || !completed.has(skill.id));
+  const visibleCount = allSkills.filter(matches).length;
+
+  const goToStage = (order: number) => {
+    setActiveStage(order);
+    document.getElementById(`stage-${order}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   if (!career) return null;
 
   return (
     <PageShell>
-      <nav className="text-sm text-muted-foreground">
+      <nav className="text-sm text-muted-foreground no-print">
         <Link to="/careers" className="hover:text-foreground">
           Careers
         </Link>
@@ -99,24 +130,173 @@ function CareerDetailPage() {
       <h1 className="mt-3 text-2xl font-semibold sm:text-3xl">{career.name}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">{career.short_description}</p>
 
-      <Button asChild className="mt-5">
-        <Link to="/auth">Track this roadmap</Link>
-      </Button>
+      <div className="mt-5 flex flex-wrap items-center gap-3 no-print">
+        <Button asChild>
+          <Link to={isSignedIn ? "/plan" : "/auth"}>
+            {isSignedIn ? "Open your plan" : "Track this roadmap"}
+          </Link>
+        </Button>
+        <Button variant="outline" onClick={() => window.print()}>
+          <Download className="mr-2 h-4 w-4" />
+          Export PDF
+        </Button>
+      </div>
 
-      <div className="mt-10 space-y-10">
-        {career.career_stages.map((stage) => (
-          <section key={stage.id} id={`stage-${stage.stage_order}`}>
-            <div className="flex items-baseline gap-3">
-              <span className="text-sm text-muted-foreground">Stage {stage.stage_order}</span>
-              <h2 className="text-lg font-medium">{stage.stage_name}</h2>
-            </div>
-            <div className="mt-3 grid gap-3">
-              {stage.skills.map((skill) => (
-                <SkillCard key={skill.id} skill={skill} />
-              ))}
-            </div>
-          </section>
+      {/* progress summary */}
+      <div className="card-surface print-block mt-8 rounded-2xl p-5">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <p className="text-sm font-medium">
+            {doneCount} of {allSkills.length} skills done
+          </p>
+          <p className="text-sm text-muted-foreground">{percent}% complete</p>
+        </div>
+        <div
+          className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={percent}
+          aria-label="Roadmap progress"
+        >
+          <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${percent}%` }} />
+        </div>
+        {!isSignedIn ? (
+          <p className="mt-3 text-xs text-muted-foreground no-print">
+            Progress is saved in this browser. Sign in to keep it across devices.
+          </p>
+        ) : null}
+      </div>
+
+      {/* stepper */}
+      <ol className="mt-6 flex gap-3 overflow-x-auto pb-2 no-print">
+        {stages.map((stage) => {
+          const total = stage.skills.length;
+          const done = stage.skills.filter((s) => completed.has(s.id)).length;
+          const isActive = activeStage === stage.stage_order;
+          const isDone = total > 0 && done === total;
+          return (
+            <li key={stage.id} className="min-w-[10.5rem] flex-1">
+              <button
+                type="button"
+                onClick={() => goToStage(stage.stage_order)}
+                aria-current={isActive ? "step" : undefined}
+                className={`w-full rounded-2xl border p-3 text-left transition-colors ${
+                  isActive ? "border-primary bg-accent" : "border-border bg-card/60 hover:bg-accent/60"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+                      isDone ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {isDone ? <Check className="h-3.5 w-3.5" /> : stage.stage_order}
+                  </span>
+                  <span className="truncate text-sm font-medium">{stage.stage_name}</span>
+                </span>
+                <span className="mt-2 block h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                  <span
+                    className="block h-full rounded-full bg-primary transition-all"
+                    style={{ width: total ? `${(done / total) * 100}%` : "0%" }}
+                  />
+                </span>
+                <span className="mt-1.5 block text-xs text-muted-foreground">
+                  {done} of {total} done
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+
+      {/* filters */}
+      <div className="mt-6 flex flex-wrap items-center gap-2 no-print">
+        {demandFilters.map((f) => (
+          <button
+            key={f.key}
+            type="button"
+            aria-pressed={demand === f.key}
+            onClick={() => setDemand(f.key)}
+            className={`min-h-9 rounded-full border px-3 text-sm transition-colors ${
+              demand === f.key
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {f.label}
+          </button>
         ))}
+        <button
+          type="button"
+          aria-pressed={hideDone}
+          onClick={() => setHideDone((v) => !v)}
+          className={`min-h-9 rounded-full border px-3 text-sm transition-colors ${
+            hideDone
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card/60 text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Hide completed
+        </button>
+        <span className="ml-auto text-xs text-muted-foreground">{visibleCount} skills shown</span>
+      </div>
+
+      <div className="mt-8 space-y-10">
+        {stages.map((stage) => {
+          const skills = stage.skills.filter(matches);
+          const done = stage.skills.filter((s) => completed.has(s.id)).length;
+          return (
+            <section key={stage.id} id={`stage-${stage.stage_order}`} className="relative pl-8 sm:pl-10">
+              <span
+                aria-hidden
+                className="absolute left-3 top-8 bottom-0 w-px bg-border sm:left-4 no-print"
+              />
+              <span
+                aria-hidden
+                className="absolute left-0 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground sm:left-1"
+              >
+                {stage.stage_order}
+              </span>
+              <div className="flex flex-wrap items-baseline gap-3">
+                <h2 className="text-lg font-medium">{stage.stage_name}</h2>
+                <span className="text-sm text-muted-foreground">
+                  {done} of {stage.skills.length} done
+                </span>
+              </div>
+              <div className="mt-3 grid gap-3">
+                {skills.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No skills match the current filters.</p>
+                ) : (
+                  skills.map((skill) => {
+                    const isDone = completed.has(skill.id);
+                    return (
+                      <div key={skill.id} className="print-block">
+                        <SkillCard
+                          skill={skill}
+                          action={
+                            <button
+                              type="button"
+                              onClick={() => void toggle(skill.id)}
+                              aria-pressed={isDone}
+                              className={`no-print inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors ${
+                                isDone
+                                  ? "border-primary bg-primary text-primary-foreground"
+                                  : "border-border text-muted-foreground hover:text-foreground"
+                              }`}
+                            >
+                              <Check className="h-3.5 w-3.5" />
+                              {isDone ? "Done" : "Mark done"}
+                            </button>
+                          }
+                        />
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </PageShell>
   );

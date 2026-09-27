@@ -105,3 +105,30 @@
 @utility shadow-elevated {
   box-shadow: var(--shadow-elevated);
 }
+
+@media print {
+  body {
+    background: #fff !important;
+    background-image: none !important;
+  }
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .print-block {
+    break-inside: avoid;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid #d7dde3 !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+    color: #556;
+    word-break: break-all;
+  }
+}
