@@ -1,6 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Check, Download } from "lucide-react";
 import { careerDetailQuery } from "@/lib/career-data";
+import { useRoadmapProgress } from "@/lib/use-roadmap-progress";
 import { PageShell } from "@/components/PageShell";
 import { SkillCard } from "@/components/SkillCard";
 import { Button } from "@/components/ui/button";
