@@ -48,6 +48,30 @@ export const Route = createFileRoute("/careers/$slug")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
+            "@type": "Course",
+            name: `${loaderData.name} roadmap`,
+            description,
+            url,
+            inLanguage: "en",
+            isAccessibleForFree: true,
+            provider: {
+              "@type": "Organization",
+              name: "Career compass",
+              url: "https://career-compass-guide-4u.lovable.app",
+            },
+            teaches: loaderData.stages.flatMap((stage) => stage.skills),
+            syllabusSections: loaderData.stages.map((stage, i) => ({
+              "@type": "Syllabus",
+              position: i + 1,
+              name: stage.stage_name,
+              description: stage.skills.join(", "),
+            })),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
             "@type": "HowTo",
             name: `How to become a ${loaderData.name.toLowerCase()}`,
             description,
