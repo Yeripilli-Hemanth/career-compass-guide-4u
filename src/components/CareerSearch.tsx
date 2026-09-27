@@ -42,6 +42,7 @@ export function CareerSearch({ placeholder = "Search a career, e.g. data analyst
       <input
         id="career-search"
         type="search"
+        aria-label="Search careers"
         role="combobox"
         aria-expanded={open && matches.length > 0}
         aria-controls="career-search-results"
