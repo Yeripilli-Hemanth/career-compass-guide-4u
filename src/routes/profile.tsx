@@ -42,12 +42,11 @@ function ProfilePage() {
   const { profile } = useProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [stage, setStage] = useState<Stage>("exploring");
+  const [targetCareerId, setTargetCareerId] = useState("");
   const { data: careers = [] } = useQuery(careersQuery);
   const { data: career } = useQuery(careerByIdQuery(targetCareerId || profile?.target_career_id));
   const { data: userSkills = [] } = useQuery(userSkillsQuery(user?.id));
-
-  const [stage, setStage] = useState<Stage>("exploring");
-  const [targetCareerId, setTargetCareerId] = useState("");
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
