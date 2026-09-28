@@ -168,14 +168,14 @@ function CareerDetailPage() {
       </div>
 
       {/* stepper */}
-      <ol className="mt-6 flex gap-3 overflow-x-auto pb-2 no-print">
+      <ol className="mt-6 grid grid-cols-2 gap-2 pb-2 no-print sm:flex sm:gap-3">
         {stages.map((stage) => {
           const total = stage.skills.length;
           const done = stage.skills.filter((s) => completed.has(s.id)).length;
           const isActive = activeStage === stage.stage_order;
           const isDone = total > 0 && done === total;
           return (
-            <li key={stage.id} className="min-w-[10.5rem] flex-1">
+            <li key={stage.id} className="min-w-0 sm:flex-1">
               <button
                 type="button"
                 onClick={() => goToStage(stage.stage_order)}
